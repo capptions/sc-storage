@@ -1,0 +1,71 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
+The complete set of authors may be found at http://polymer.github.io/AUTHORS
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
+-->
+<link rel="import" href="../polymer/polymer.html" />
+
+<dom-module id="sc-storage">
+  <template></template>
+</dom-module>
+
+<script>
+(function () {
+  window.Polymer({
+    is: 'sc-storage',
+    get: function (key) {
+      var entry = window.localStorage.getItem(key);
+      if (entry) {
+        try {
+          entry = JSON.parse(entry);
+        }
+        catch (ex) {}
+      }
+      return entry;
+    },
+
+    set: function (key, object) {
+      if (!object) {
+        return window.localStorage.removeItem(key);
+      }
+      window.localStorage.setItem(key, JSON.stringify(object));
+    },
+
+    push: function (key, object, unshift) {
+      if (!object) {
+        return;
+      }
+
+      var entry = this.get(key) || [];
+      var str = JSON.stringify(object);
+      if (entry.indexOf(str) < 0) {
+        entry[unshift ? 'unshift' : 'push'](str);
+        this.set(key, entry);
+      }
+    },
+
+    shift: function (key) {
+      var entry = this.get(key) || [];
+      var item = entry.shift();
+
+      if (!item) {
+        return undefined;
+      }
+
+      try {
+        item = JSON.parse(item);
+      }
+      catch (ex) {
+        return undefined;
+      }
+
+      this.set(key, entry);
+      return item;
+    }
+  });
+})();
+</script>
