@@ -7,65 +7,70 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
 -->
-<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="bower_components/polymer/polymer.html" />
 
 <dom-module id="sc-storage">
   <template></template>
 </dom-module>
 
 <script>
-(function () {
-  window.Polymer({
-    is: 'sc-storage',
-    get: function (key) {
-      var entry = window.localStorage.getItem(key);
-      if (entry) {
-        try {
-          entry = JSON.parse(entry);
+  (function () {
+    window.Polymer({
+      is: 'sc-storage',
+      get: function (key) {
+        var entry = window.localStorage.getItem(key);
+        if (entry) {
+          try {
+            entry = JSON.parse(entry);
+          }
+          catch (ex) {}
         }
-        catch (ex) {}
-      }
-      return entry;
-    },
+        return entry;
+      },
 
-    set: function (key, object) {
-      if (!object) {
-        return window.localStorage.removeItem(key);
-      }
-      window.localStorage.setItem(key, JSON.stringify(object));
-    },
+      set: function (key, object) {
+        if (!object) {
+          return window.localStorage.removeItem(key);
+        }
+        window.localStorage.setItem(key, JSON.stringify(object));
+      },
 
-    push: function (key, object, unshift) {
-      if (!object) {
-        return;
-      }
+      push: function (key, object, unshift) {
+        if (!object) {
+          return;
+        }
 
-      var entry = this.get(key) || [];
-      var str = JSON.stringify(object);
-      if (entry.indexOf(str) < 0) {
-        entry[unshift ? 'unshift' : 'push'](str);
+        var entry = this.get(key) || [];
+        var str = JSON.stringify(object);
+        if (entry.indexOf(str) < 0) {
+          entry[unshift ? 'unshift' : 'push'](str);
+          this.set(key, entry);
+        }
+      },
+
+      shift: function (key) {
+        var entry = this.get(key) || [];
+        var item = entry.shift();
+
+        if (!item) {
+          return undefined;
+        }
+
+        try {
+          item = JSON.parse(item);
+        }
+        catch (ex) {
+          return undefined;
+        }
+
         this.set(key, entry);
-      }
-    },
+        return item;
+      },
 
-    shift: function (key) {
-      var entry = this.get(key) || [];
-      var item = entry.shift();
-
-      if (!item) {
-        return undefined;
+      // function to clear the local storage
+      clear: function () {
+        window.localStorage.clear();
       }
-
-      try {
-        item = JSON.parse(item);
-      }
-      catch (ex) {
-        return undefined;
-      }
-
-      this.set(key, entry);
-      return item;
-    }
-  });
-})();
+    });
+  })();
 </script>
