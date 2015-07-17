@@ -30,4 +30,30 @@ bower install --save sc-storage
   <sc-storage></sc-storage>
 ```
 
+### Example usage
+
+```
+  var ls = document.getElementsByTagName('sc-storage')[0];
+
+  // Set the object
+  ls.set(0, {
+    name: 'superman',
+    address: 'krypton'
+  });
+
+  // Get the object
+  ls.get(0);
+
+  // Push the value at a specifty position
+  ls.push(1, { age: 30 }, 'unshift');
+
+  // Remove the element from index 1
+  ls.shift(1)
+
+  // Clear the local storage
+  ls.clear();
+
+
+```
+
 Contributions welcome, please create issues!
