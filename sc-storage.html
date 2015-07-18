@@ -41,11 +41,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       var entry = this.get(key) || [];
+
       var str = JSON.stringify(object);
-      if (entry.indexOf(str) < 0) {
-        entry[unshift ? 'unshift' : 'push'](str);
-        this.set(key, entry);
+      for (var i = 0; i < entry.length; i++) {
+        if (JSON.stringify(entry[i]) === str) {
+          return;
+        }
       }
+
+      entry[unshift ? 'unshift' : 'push'](object);
+      this.set(key, entry);
     },
 
     shift: function (key) {
@@ -53,13 +58,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var item = entry.shift();
 
       if (!item) {
-        return undefined;
-      }
-
-      try {
-        item = JSON.parse(item);
-      }
-      catch (ex) {
         return undefined;
       }
 
