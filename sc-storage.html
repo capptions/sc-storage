@@ -17,15 +17,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 (function () {
   window.Polymer({
     is: 'sc-storage',
+
+    tryParse: function (str) {
+      try {
+        str = JSON.parse(str);
+        return str;
+      }
+      catch (ex) {
+        return undefined;
+      }
+    },
+
     get: function (key) {
       var entry = window.localStorage.getItem(key);
-      if (entry) {
-        try {
-          entry = JSON.parse(entry);
-        }
-        catch (ex) {}
-      }
-      return entry;
+      return this.tryParse(entry);
     },
 
     set: function (key, object) {

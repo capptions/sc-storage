@@ -15,6 +15,7 @@
     "json"
   ],
   "main": "sc-storage.html",
+  "ignore": {},
   "private": false,
   "repository": {
     "type": "git",
