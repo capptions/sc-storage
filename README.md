@@ -27,7 +27,43 @@ bower install --save sc-storage
 ### How to use
 
 ```html
-  <sc-storage></sc-storage>
+  <sc-storage id="storage"></sc-storage>
+```
+
+### Example usage
+
+```
+var shout = function (profile) {
+  window.alert(profile.name.concat(' lives at ', profile.address!'));
+};
+
+// Store something
+this.$.storage.set('profile', {
+  name: 'superman',
+  address: 'krypton'
+});
+
+// Retrieve something
+var superman = this.$.storage.get('profile');
+shout(superman);
+
+// Push to an array
+this.$.storage.push('profiles', {
+  name: 'superman',
+  address: 'krypton'
+});
+
+this.$.storage.push('profiles', {
+  name: 'batman',
+  address: 'gotham'
+}, 'unshift');
+
+// Retrieve and pop the first one from the array
+var batman = this.$.storage.shift('profiles');
+shout(batman);
+
+// Clear the storage
+this.$.storage.clear();
 ```
 
 Contributions welcome, please create issues!
