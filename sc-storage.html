@@ -45,6 +45,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return;
       }
 
+      if (Array.isArray(object)) {
+        return object.forEach(function (o) {
+          this.push(key, o, unshift);
+        }, this);
+      }
+
       var entry = this.get(key) || [];
 
       var str = JSON.stringify(object);
