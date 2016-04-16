@@ -29,15 +29,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     get: function (key) {
-      var entry = window.localStorage.getItem(key);
-      return this.tryParse(entry);
+      try {
+        var entry = window.localStorage.getItem(key);
+        return this.tryParse(entry);
+      }
+      catch (ex) {}
     },
 
     set: function (key, object) {
-      if (!object) {
-        return window.localStorage.removeItem(key);
+      try {
+        if (!object) {
+          return window.localStorage.removeItem(key);
+        }
+        window.localStorage.setItem(key, JSON.stringify(object));
       }
-      window.localStorage.setItem(key, JSON.stringify(object));
+      catch (ex) {}
     },
 
     push: function (key, object, unshift) {
